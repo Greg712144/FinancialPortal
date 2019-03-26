@@ -1,0 +1,354 @@
+﻿@using Microsoft.AspNet.Identity
+@using FinancialPortal.Helpers
+@using FinancialPortal.Models
+
+@{ 
+    var roleHelper = new UsersRoleHelper();
+    var hous = new HouseholdHelper();
+    var user = User.Identity.Name;
+ }
+
+<!DOCTYPE html>
+<html class="fixed sidebar-left-collapsed">
+<head>
+
+    <!-- Basic -->
+    <meta charset="UTF-8">
+
+    <title>Financial Portal</title>
+    <meta name="keywords" content="HTML5 Admin Template" />
+    <meta name="description" content="Porto Admin - Responsive HTML5 Template">
+    <meta name="author" content="okler.net">
+
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- Web Fonts  -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css" />*@
+
+    <!-- Vendor CSS -->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/morris.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/magnific-popup.css" rel="stylesheet" />
+    <link href="~/Content/datepicker3.css" rel="stylesheet" />
+    <link href="~/Content/select2.css" rel="stylesheet" />
+    <link href="~/Content/datatables.css" rel="stylesheet" />
+
+    <link href="~/Content/jquery-ui-1.10.4.custom.css" rel="stylesheet" />
+    <!-- Theme CSS -->
+    <link href="~/Content/theme.css" rel="stylesheet" />
+    <!-- Skin CSS -->
+    <link href="~/Content/default.css" rel="stylesheet" />
+    <!-- Theme Custom CSS -->
+    <link href="~/Content/theme-custom.css" rel="stylesheet" />
+    <!-- Head Libs -->
+    <script src="~/Scripts/modernizr.js"></script>
+    <!--Favicon-->
+    <link href="~/Images/Octupus Imgs/projects/RedApple.png" rel="icon" />
+</head>
+<body>
+    <section class="body">
+
+        <!-- start: header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="~/Images/Octupus Imgs/icon.png" /><b>Financial Portal</b>
+                </div>
+                <div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+                    <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                </div>
+            </div>
+
+            <!-- start: search & user box -->
+            <div class="header-right">
+
+
+
+                @if (Request.IsAuthenticated)
+                {
+
+                    <ul class="notifications">
+
+                        <li>
+                            <a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+                                <i class="fa fa-bell"></i>
+                                <span class="badge"></span>
+                            </a>
+
+                            <div class="dropdown-menu notification-menu">
+                                <div class="notification-title">
+                                    <span class="pull-right label label-default">3</span>
+                                    Alerts
+                                </div>
+
+                                <div class="content">
+                                    <ul>
+                                        <li>
+                                            <a href="#" class="clearfix">
+                                                <div class="image">
+                                                    <i class="fa fa-thumbs-down bg-danger"></i>
+                                                </div>
+                                                <span class="title">Server is Down!</span>
+                                                <span class="message">Just now</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <hr />
+
+                                    <div class="text-right">
+                                        <a href="#" class="view-more">View All</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <span class="separator"></span>
+
+                    <div id="userbox" class="userbox">
+                        <a href="#" data-toggle="dropdown">
+                            <figure class="profile-picture">
+                                <img src="~/Images/Octupus Imgs/projects/pic-1.png" alt="Joseph Doe" class="img-circle" />
+                            </figure>
+                            <div class="profile-info">
+                                <span class="name">@user</span>
+
+                                <span class="role"></span>
+                            </div>
+
+                            <i class="fa custom-caret"></i>
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <ul class="list-unstyled">
+                                <li class="divider"></li>
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="@Url.Action("EP","Users", new { id = User.Identity.GetUserId()})"><i class="fa fa-user"></i> My Profile</a>
+                                </li>
+                                @if (Request.IsAuthenticated)
+                                {
+                                    <li>
+                                        <a role="menuitem" tabindex="-1" href="@Url.Action("ChangePassword","Manage", new { id = User.Identity.GetUserId()})"><i class="fa fa-lock"></i> Change Password</a>
+                                    </li>
+                                }
+                                @if (Request.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+                                                <i class="menu-icon mdi mdi-sticker"></i>
+                                                <span class="menu-title">LogOff</span>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("Login", "Account")">
+                                            <i class="menu-icon mdi mdi-sticker"></i>
+                                            <span class="menu-title">Login</span>
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <!-- end: search & user box -->
+        </header>
+        <!-- end: header -->
+
+        <div class="inner-wrapper">
+            <!-- start: sidebar -->
+            <aside id="sidebar-left" class="sidebar-left">
+
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                    </div>
+                    <div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
+                        <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+                    </div>
+                </div>
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="nano">
+                        <div class="nano-content">
+                            <nav id="menu" class="nav-main" role="navigation">
+                                <ul class="nav nav-main">
+                                    <li>
+                                        <a href="@Url.Action("Dashboard","Households")">
+                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-bank" aria-hidden="true"></i>
+                                            <span>My Accounts</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="@Url.Action("Index","MyAccounts")">
+                                                    View All Accounts
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-money" aria-hidden="true"></i>
+                                            <span>My Budgets</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="@Url.Action("Index","Budgets")">
+                                                    View All Budgets
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("Index","BudgetItems")">
+                                                    View Budget Items
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-usd" aria-hidden="true"></i>
+                                            <span>My Transactions</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a href="@Url.Action("Index","Transactions")">
+                                                    View All Transactions
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="nano">
+                        <div class="nano-content">
+                            <nav id="menu" class="nav-main" role="navigation">
+                                <ul class="nav nav-main">
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-home" aria-hidden="true"></i>
+                                            <span>Hello!</span>
+                                        </a>
+                                        <ul class="nav nav-children">
+                                            <li>
+                                                <a>
+                                                    Please Login or Register!
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+                }
+
+
+            </aside>
+            <!-- end: sidebar -->
+
+            <section role="main" class="content-body">
+                <header class="page-header">
+                    @if ((Request.IsAuthenticated) && hous.ListUserHousehold().FirstOrDefault() != null)
+                    {
+
+                        <h2>@hous.ListUserHousehold().FirstOrDefault().Name</h2>
+
+                    }
+
+                    <div class="right-wrapper pull-right">
+                        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+                    </div>
+                </header>
+
+                <!-- start: page -->
+
+
+                @RenderBody()
+
+                <!-- end: page -->
+            </section>
+        </div>
+        <aside id="sidebar-right" class="sidebar-right">
+            <div class="nano">
+                <div class="nano-content">
+                    <a href="#" class="mobile-close visible-xs">
+                        Collapse <i class="fa fa-chevron-right"></i>
+                    </a>
+
+                    <div class="sidebar-right-wrapper">
+
+                        <div class="sidebar-widget widget-calendar">
+                            <h6>Calendar</h6>
+                            <div data-plugin-datepicker data-plugin-skin="dark"></div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </section>
+
+    <!-- Vendor -->
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/jquery.browser.mobile.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/nanoscroller.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/magnific-popup.js"></script>
+    <script src="~/Scripts/jquery.placeholder.js"></script>
+
+    <!-- Specific Page Vendor -->
+    <script src="~/Scripts/select2.js"></script>
+    <script src="~/Scripts/jquery.dataTables.js"></script>
+    <script src="~/Scripts/datatables.js"></script>
+    <script src="~/Scripts/dataTables.tableTools.min.js"></script>
+    <script src="~/Scripts/raphael.js"></script>
+
+    <!-- Theme Base, Components and Settings -->
+    <script src="~/Scripts/theme.js"></script>
+    <!-- Theme Custom -->
+    <script src="~/Scripts/theme.custom.js"></script>
+    <!-- Theme Initialization Files -->
+    <script src="~/Scripts/theme.init.js"></script>
+
+    <!--Examples-->
+    <script src="~/Scripts/tinymce/examples.datatables.row.with.details.js"></script>
+    <script src="~/Scripts/examples.charts.js"></script>
+    <script src="~/Scripts/morris.js"></script>
+
+    @*<script>
+            $('#gregTable').dataTable();
+        </script>*@
+    @RenderSection("scripts", false)
+</body>
+</html>

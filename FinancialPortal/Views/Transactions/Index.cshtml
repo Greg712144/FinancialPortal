@@ -1,0 +1,66 @@
+﻿@model IEnumerable<FinancialPortal.Models.Transaction>
+
+@{
+                /**/
+
+                ViewBag.Title = "Index";
+}
+
+<section class="panel">
+    <header class="panel-heading">
+        <div class="panel-actions">
+            <a href="#" class="fa fa-caret-down"></a>
+            <a href="#" class="fa fa-times"></a>
+        </div>
+
+        <h2 class="panel-title">Transactions</h2>
+        <p>
+            @Html.ActionLink("Add New Transaction", "Create")
+        </p>
+    </header>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped mb-none" id="datatable-details">
+            <thead>
+                <tr>
+                    <th class="tbId">@Html.DisplayNameFor(model => model.Id)</th>
+                    <th>@Html.DisplayName("Account")</th>
+                    <th>@Html.DisplayName("BudgetItem")</th>
+                    <th>@Html.DisplayNameFor(model => model.EnteredBy.FirstName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Description)</th>
+                    <th>@Html.DisplayNameFor(model => model.Date)</th>
+                    <th>@Html.DisplayNameFor(model => model.Amount)</th>
+                    <th>@Html.DisplayNameFor(model => model.Type)</th>
+                    <th>@Html.DisplayNameFor(model => model.Reconciled)</th>
+                    <th>@Html.DisplayNameFor(model => model.ReconciledAmount)</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr class="gradeX">
+                    <td class="tbId">@Html.DisplayFor(modelItem => item.Id)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Account.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.BudgetItem.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.EnteredBy.FirstName)</td>
+                    <td class="center">@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td class="center">@Html.DisplayFor(modelItem => item.Date)</td>
+                    <td class="center">@Html.DisplayFor(modelItem => item.Amount)</td>
+                    <td class="center">@Html.DisplayFor(modelItem => item.Type)</td>
+                    <td class="center">@Html.DisplayFor(modelItem => item.Reconciled)</td>
+                    <td class="center">@Html.DisplayFor(modelItem => item.ReconciledAmount)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(".tbId").hide();
+ </script>
+
+}

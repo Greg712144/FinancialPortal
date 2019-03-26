@@ -1,0 +1,78 @@
+﻿@using FinancialPortal.Helpers
+@model IEnumerable<FinancialPortal.Models.MyAccount>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<section class="panel">
+    <header class="panel-heading">
+        <div class="panel-actions">
+            <a href="#" class="fa fa-caret-down"></a>
+            <a href="#" class="fa fa-times"></a>
+        </div>
+
+        <h2 class="panel-title">My Accounts</h2>
+        <p>
+            @Html.ActionLink("Add New Account", "Create")
+        </p>
+    </header>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped mb-none" id="datatable-details">
+            <thead>
+                <tr>
+                    <th class="tbId">@Html.DisplayNameFor(model => model.Id)</th>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>@Html.DisplayName("Household")</th>
+
+                    }
+
+                    <th>@Html.DisplayName("Account")</th>
+                    <th>@Html.DisplayNameFor(model => model.InitialBalance)</th>
+                    <th>@Html.DisplayNameFor(model => model.CurrentBalance)</th>
+                    <th>@Html.DisplayNameFor(model => model.ReconciledBalance)</th>
+                    <th>@Html.DisplayNameFor(model => model.LowBalanceLevel)</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr class="gradeX">
+
+                    <td class="tbId">@Html.DisplayFor(modelItem => item.Id)</td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>@Html.DisplayFor(modelItem => item.Household.Name)</td>
+
+                    }
+
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.InitialBalance)</td>
+
+                    <td class="center">
+
+                        @BaHelper.GetCurrentBalance(item.Id)
+
+                    </td>
+
+                    <td class="center">@Html.DisplayFor(modelItem => item.ReconciledBalance)</td>
+                    <td class="center">@Html.DisplayFor(modelItem => item.LowBalanceLevel)</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(".tbId").hide();
+    </script>
+
+}

@@ -1,0 +1,332 @@
+﻿@using FinancialPortal.Enumerations
+@using FinancialPortal.Helpers
+@using Microsoft.AspNet.Identity
+@model FinancialPortal.ViewModels.DataVM
+
+@{
+    ViewBag.Title = "Create Invitation";
+    var user = User.Identity.GetUserId();
+    var house = new HouseholdHelper();
+
+}
+
+<header class="page-header">
+    <h2>@Model.Households.Name</h2>
+
+    <div class="right-wrapper pull-right">
+        <ol class="breadcrumbs">
+
+            @if (User.IsInRole("HOH") || User.IsInRole("Admin"))
+            {
+                <li><span><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#inviteModal">Invite New Member</button></span></li>
+            }
+            <li><span><button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#leaveModal">Leave Houshold</button></span></li>
+
+        </ol>
+        <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+
+    </div>
+</header>
+
+@if (User.IsInRole("HOH"))
+{
+    <!-- Modal -->
+    <div id="inviteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Creating an invitation for @Model.Households.Name</h4>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("CreateAsync", "Invitations", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken();
+                        @Html.HiddenFor(model => Model.Households.Id)
+
+                        <div class="form-group">
+                            @Html.Label("Email", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.Editor("Email", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Subject", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.Editor("Subject", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="#Body">
+                            @Html.Label("Body", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.Editor("Body", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <button class="btn bn-lg btn-warning" type="submit">Send</button>
+
+                    }
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+}
+<div id="leaveModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Are you sure you want to leave @Model.Households.Name ?</h4>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Delete", "Households", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    @Html.HiddenFor(model => Model.Households.Id)
+
+
+                    <button class="btn bn-lg btn-danger" type="submit" value="Delete">Yes, I'm sure</button>
+                    <button class="btn bn-lg btn-success" type="submit" data-dismiss="modal">No, I've changed my mind</button>
+
+                }
+
+            </div>
+
+        </div>
+        }
+
+
+    </div>
+</div>
+
+
+<!-- start: page -->
+<div class="row">
+    <div class="col-md-6 col-lg-12 col-xl-6">
+        <div class="row">
+            <div class="col-md-12 col-lg-6 col-xl-6">
+                <section class="panel">
+                    <div class="panel-body bg-primary">
+                        <div class="widget-summary bg-primary">
+                            <div class="widget-summary-col widget-summary-col-icon">
+                                <div class="summary-icon bg-danger">
+                                    <i class="fa fa-life-ring fa-spin"></i>
+                                </div>
+                            </div>
+                            <div class="widget-summary-col">
+                                <div class="summary">
+                                    <h4 class="title">Open Accounts</h4>
+                                    <div class="info">
+                                        <strong class="amount">@Model.Households.Accounts.Count()</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-12 col-lg-6 col-xl-6">
+                <section class="panel">
+                    <div class="panel-body bg-danger">
+                        <div class="widget-summary">
+                            <div class="widget-summary-col widget-summary-col-icon">
+                                <div class="summary-icon bg-tertiary">
+                                    <i class="fa fa-arrow-circle-o-down fa-spin"></i>
+                                </div>
+                            </div>
+                            <div class="widget-summary-col">
+                                <div class="summary">
+                                    <h4 class="title">Household Members</h4>
+                                    <div class="info">
+                                        <strong class="amount">@Model.Households.Members.Count()</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-xl-6 col-lg-12">
+        <section class="panel">
+            <header class="panel-heading panel-heading-transparent">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+
+                <h2 class="panel-title">Latest Transactions</h2>
+            </header>
+            <div class="panel-body bg-success">
+                <div class="timeline timeline-simple mt-xlg mb-md">
+                    <div class="tm-body">
+                        @foreach (var tran in Model.Transactions.OrderByDescending(t => t.Date).Take(3))
+                        {
+                            <div class="tm-title">
+                                @if (tran.Type == TransactionType.Withdrawal)
+                                {
+                                    <h3 class="h5 text-uppercase text-bold text-muted text-primary"> Withdrawal</h3>
+                                }
+                                else if (tran.Type == TransactionType.Deposit)
+                                {
+                                    <h3 class="h5 text-uppercase text-bold text-muted text-primary">Deposit</h3>
+                                }
+
+                            </div>
+                            <ol class="tm-items">
+
+                                <li>
+                                    <div class="tm-box">
+                                        <p class="text-bold text-muted text-primary mb-none"><u>@tran.Date</u></p>
+                                        @if (tran.Type == TransactionType.Withdrawal)
+                                        {
+                                            <p class="text-bold text-muted text-primary">
+                                                @tran.Description [from your @tran.Account.Name Account]
+                                            </p> }
+                                        else if (tran.Type == TransactionType.Deposit)
+                                        {
+                                            <p class="text-bold text-muted text-primary">
+                                                @tran.Description [to your @tran.Account.Name Account]
+                                            </p>
+                                        }
+                                    </div>
+                                </li>
+
+
+                            </ol>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+
+        <section class="panel">
+            <header class="panel-heading bg-primary ">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+
+                <h2 class="panel-title">
+                    <span class="label label-info label-sm text-normal va-middle mr-sm">@Model.Households.Members.Count()</span>
+                    <span class="va-middle text-info text-bold">Members of Household</span>
+                </h2>
+            </header>
+            <div class="panel-body">
+                <div class="content">
+                    <ul class="simple-user-list">
+                        @foreach (var member in Model.Households.Members)
+                        {
+                            <li>
+                                <span class="title">@member.FirstName @member.LastName</span>
+                                <span class="text-warning mr-1 mb-0">[@member.Email]</span>
+                            </li>
+                        }
+
+                    </ul>
+                    <hr class="dotted short">
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-md-6">
+        <section class="panel">
+            <header class="panel-heading bg-info">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+
+                <h2 class="panel-title text-primary">Actual vs. Budgeted Spending</h2>
+            </header>
+            <div class="panel-body">
+
+                <!-- Morris: Area -->
+                <div class="chart chart-md" id="morrisStacked"></div>
+
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<aside id="sidebar-right" class="sidebar-right">
+    <div class="nano">
+        <div class="nano-content">
+            <a href="#" class="mobile-close visible-xs">
+                Collapse <i class="fa fa-chevron-right"></i>
+            </a>
+
+            <div class="sidebar-right-wrapper">
+
+                <div class="sidebar-widget widget-calendar">
+                    <h6>Calendar</h6>
+                    <div data-plugin-datepicker data-plugin-skin="dark"></div>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</aside>
+<!-- end: page -->
+@section scripts
+{
+
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            tinymce.init({
+                selector: '#Body'
+            })
+        })
+
+    </script>
+
+    <script>
+
+        var morrisChartDataRoute = '@Url.Action("GetMorrisChartData","ChartData")';
+
+        $.post(morrisChartDataRoute).then(function (response) {
+            $('#morrisStacked').empty();
+            new Morris.Bar({
+                resize: true,
+                element: 'morrisStacked',
+                data: response,
+                xkey: 'y',
+                ykeys: ['a', 'b'],
+                labels: ['A','B'],
+                barColors: ['#0088cc', '#2baab1'],
+                fillOpacity: 0.7,
+                smooth: false,
+                stacked: true,
+                hideHover: true
+            });
+        });
+              
+    </script>
+
+}

@@ -1,0 +1,54 @@
+﻿@using FinancialPortal.Helpers
+@model IEnumerable<FinancialPortal.Models.BudgetItem>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<section class="panel">
+    <header class="panel-heading">
+        <div class="panel-actions">
+            <a href="#" class="fa fa-caret-down"></a>
+            <a href="#" class="fa fa-times"></a>
+        </div>
+
+        <h2 class="panel-title">Budget Items</h2>
+        <p>
+            @Html.ActionLink("Add New Budget Item", "Create")
+        </p>
+    </header>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped mb-none" id="datatable-details">
+            <thead>
+                <tr>
+                    <th class="tbId">@Html.DisplayNameFor(model => model.Id)</th>
+                    <th>@Html.DisplayName("Budget Name")</th>
+                    <th>@Html.DisplayName("Budget Item")</th>
+                    <th>@Html.DisplayNameFor(model => model.Description)</th>
+                    <th>@Html.DisplayNameFor(model => model.TargetAmount)</th>
+                    <th>@Html.DisplayName("Current Total")</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="gradeX">
+                        <td class="tbId">@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Budget.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td class="center">@Html.DisplayFor(modelItem => item.Description)</td>
+                        <td class="center">@Html.DisplayFor(modelItem => item.TargetAmount)</td>
+                        <td class="center">@Html.DisplayFor(modelItem => item.CurrentAmount)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+@section scripts{
+<script>
+    $(".tbId").hide();
+</script>
+    }

@@ -1,0 +1,11 @@
+﻿@model FinancialPortal.Models.IndexViewModel
+@{
+    ViewBag.Title = "Great!";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    @Html.ActionLink("Back to Home","Index","Home")
+</div>

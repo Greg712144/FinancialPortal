@@ -1,0 +1,21 @@
+﻿
+<section>
+    @if (TempData["Exp"] != null)
+    {
+        <div class="alert alert-info fade in nomargin">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Announcement!</h4>
+            <p>@TempData["Exp"]</p>
+
+        </div>
+    }
+    else if (TempData["Accepted"] != null)
+    {
+        <div class="alert alert-info fade in nomargin">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            <h4>Announcement!</h4>
+            <p>@TempData["Accepted"]</p>
+
+        </div>
+    }
+</section>

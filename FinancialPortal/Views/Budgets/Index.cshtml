@@ -1,0 +1,68 @@
+﻿@using FinancialPortal.Helpers
+@model IEnumerable<FinancialPortal.Models.Budget>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<section class="panel">
+    <header class="panel-heading">
+        <div class="panel-actions">
+            <a href="#" class="fa fa-caret-down"></a>
+            <a href="#" class="fa fa-times"></a>
+        </div>
+
+        <h2 class="panel-title">Budgets</h2>
+        <p>
+            @Html.ActionLink("Add New Budget", "Create")
+        </p>
+    </header>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped mb-none" id="datatable-details">
+            <thead>
+                <tr>
+
+                    <th class="tbId">@Html.DisplayNameFor(model => model.Id)</th>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>@Html.DisplayName("Household")</th>
+
+                    }
+                    <th>@Html.DisplayName("Budget Name")</th>
+                    <th>@Html.DisplayName("Spending Target")</th>
+                    <th>@Html.DisplayName("Current Target")</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr class="gradeX">
+
+                    <td class="tbId">@Html.DisplayFor(modelItem => item.Id)</td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>@Html.DisplayFor(modelItem => item.Household.Name)</td>
+
+                    }
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@budHelper.GetBudgetTarget(item.Id)</td>
+                    <td>@budHelper.GetBudgetActual(item.Id)</td>
+
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+ <script>
+        $(".tbId").hide();
+    </script>
+
+}

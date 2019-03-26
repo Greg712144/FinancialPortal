@@ -1,0 +1,25 @@
+﻿@using FinancialPortal.ViewModels
+@model IEnumerable<GuestUser>
+
+@{ 
+    ViewBag.Title = "Lobby";
+}
+
+<div class="row">
+    <h3>
+        <a class="btn btn-block btn-warning btn-lg" href="@Url.Action("Create","Households")">Create Household</a>
+    </h3>
+    <div class="col-md-3">
+        @foreach (var guest in Model)
+        {
+            <div class="panel panel-sign">
+                <div class="panel-body">
+                    <p><b>Name :</b> @guest.Name</p>
+                    <p><b>Email :</b> @guest.Email</p>
+                    <p><b>Display Name :</b> @guest.DisplayName</p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

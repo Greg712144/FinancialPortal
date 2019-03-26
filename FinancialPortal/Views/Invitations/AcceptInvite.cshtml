@@ -1,0 +1,78 @@
+﻿@model FinancialPortal.Models.AcceptRegisterViewModel
+
+@{
+    ViewBag.Title = "AcceptInvite";
+}
+
+<section class="body-sign">
+    <div class="center-sign">
+
+        <div class="panel panel-sign">
+            <div class="panel-title-sign mt-xl text-right">
+                <h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Finish Registration</h2>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("AcceptRegister", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Household)
+                    @Html.HiddenFor(model => model.HouseholdId)
+
+                    <div class="form-group mb-lg">
+                        <label for=" disabledInput">Invitation Code</label>
+                        @Html.TextBoxFor(m => m.Keycode, new { @class = "form-control input-lg", @readonly = "readonly", tabindex = -1})
+
+                    </div>
+
+                    <div class="form-group mb-lg">
+                        <label>Email Address</label>
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-lg", @readonly = "readonly", tabindex = -1 })
+
+                    </div>
+
+                    <div class="form-group mb-lg">
+                        <label>First Name</label>
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control input-lg" })
+
+                    </div>
+
+                    <div class="form-group mb-lg">
+                        <label>Last Name</label>
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control input-lg" })
+
+                    </div>
+
+                    <div class="form-group mb-lg">
+                        <label>Display Name</label>
+                        @Html.TextBoxFor(m => m.DisplayName, new { @class = "form-control input-lg" })
+
+                    </div>
+
+                    <div class="form-group mb-none">
+                        <div class="row">
+                            <div class="col-sm-6 mb-lg">
+                                <label>Password</label>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control input-lg" })
+
+                            </div>
+                            <div class="col-sm-6 mb-lg">
+                                <label>Password Confirmation</label>
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control input-lg" })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button type="submit" class="btn btn-primary hidden-xs">Register</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Register</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
