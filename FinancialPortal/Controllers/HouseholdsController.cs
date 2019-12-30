@@ -39,9 +39,9 @@ namespace FinancialPortal.Controllers
 
 
             var data = new DataVM();
+            data.Households = house;
             data.Accounts = db.MyAccounts.ToList();
             data.Budgets = db.Budgets.ToList();
-            data.Households = house;
             data.Invitations = db.Invitations.ToList();
             data.Members = db.Users.ToList();
             data.Transactions = db.Transactions.ToList();

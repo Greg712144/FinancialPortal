@@ -23,7 +23,7 @@ namespace FinancialPortal.Controllers
             var householdId = db.Users.Find(userId).HouseholdId;
 
             //get budget id from household
-
+          
             var budgeted = db.BudgetItems.Where(b => b.Budget.HouseholdId == householdId).Sum(b => b.TargetAmount);
             var act = db.BudgetItems.Where(b => b.Budget.HouseholdId == householdId).Sum(b => b.CurrentAmount);
 

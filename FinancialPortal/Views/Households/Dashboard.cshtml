@@ -197,7 +197,7 @@
                                         @if (tran.Type == TransactionType.Withdrawal)
                                         {
                                             <p class="text-bold text-muted text-primary">
-                                                @tran.Description [from your @tran.Account.Name Account]
+                                                @tran.Description [from your @tran.Account.Name Account] 
                                             </p> }
                                         else if (tran.Type == TransactionType.Deposit)
                                         {
@@ -248,24 +248,49 @@
         </section>
     </div>
 
-    <div class="col-md-6">
-        <section class="panel">
-            <header class="panel-heading bg-info">
-                <div class="panel-actions">
-                    <a href="#" class="fa fa-caret-down"></a>
-                    <a href="#" class="fa fa-times"></a>
+    @if (Model.BudgetItems != null)
+    {
+        <div class="col-md-6">
+            <section class="panel">
+                <header class="panel-heading bg-info">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+
+                    <h2 class="panel-title text-primary">Actual vs. Budgeted Spending</h2>
+                </header>
+                <div class="panel-body">
+
+                    <!-- Morris: Area -->
+                    <div class="chart chart-md" id="morrisStacked"></div>
+
                 </div>
+            </section>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-6">
+            <section class="panel">
+                <header class="panel-heading bg-info">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
 
-                <h2 class="panel-title text-primary">Actual vs. Budgeted Spending</h2>
-            </header>
-            <div class="panel-body">
+                    <h2 class="panel-title text-primary">Actual vs. Budgeted Spending</h2>
+                </header>
+                <div class="panel-body">
 
-                <!-- Morris: Area -->
-                <div class="chart chart-md" id="morrisStacked"></div>
+                    <!-- Morris: Area -->
+                    <div>You have no available information at this moment..</div>
 
-            </div>
-        </section>
-    </div>
+                </div>
+            </section>
+        </div>
+    }
+
 
 </div>
 
